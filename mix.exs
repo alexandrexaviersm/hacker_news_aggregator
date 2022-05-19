@@ -20,7 +20,7 @@ defmodule HackerNewsAggregator.MixProject do
   def application do
     [
       mod: {HackerNewsAggregator.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :inets]
     ]
   end
 
