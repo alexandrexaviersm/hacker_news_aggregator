@@ -39,6 +39,8 @@ defmodule HackerNewsAggregator.MixProject do
       {:telemetry_poller, "~> 1.0"},
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
+      # Translates Elixir functions to match specifications for use with :ets
+      {:ex2ms, "~> 1.0"},
 
       # dev, test
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
