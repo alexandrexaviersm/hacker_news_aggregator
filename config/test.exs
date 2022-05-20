@@ -12,3 +12,7 @@ config :logger, level: :warn
 
 # Initialize plugs at runtime for faster test compilation
 config :phoenix, :plug_init_mode, :runtime
+
+config :hacker_news_aggregator, :hacker_news_api,
+  http_adapter: HttpAdapterMock,
+  api_client: ApiBehaviourMock
