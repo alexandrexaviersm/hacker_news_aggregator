@@ -20,7 +20,7 @@ defmodule HackerNewsAggregator.Server do
 
   @spec init([]) :: {:ok, %{tasks: %{}}}
   def init([]) do
-    :timer.send_interval(:timer.minutes(5), :poll_hacker_news_api)
+    schedule_hacker_news_api_poll()
 
     send(self(), :poll_hacker_news_api)
 
@@ -91,10 +91,14 @@ defmodule HackerNewsAggregator.Server do
 
     Logger.warn("Task to fetch story #{inspect(story_id)} from_hacker_news failed")
 
-    Logger.info("Retriyng task to fetch story: #{inspect(story_id)}")
+    Logger.warn("Retriyng task to fetch story: #{inspect(story_id)}")
 
     task = create_task_to_fetch_story_from_hacker_news(story_id, story_index)
 
     put_in(updated_state.tasks[task.ref], {story_id, story_index})
+  end
+
+  defp schedule_hacker_news_api_poll do
+    :timer.send_interval(:timer.minutes(5), :poll_hacker_news_api)
   end
 end

@@ -4,17 +4,21 @@ defmodule HackerNewsAggregator.HackerNewsApi.ApiBehaviour do
   """
 
   @type story_id :: non_neg_integer
-  @type story_data :: %{
-          by: String.t(),
-          descendants: integer,
-          id: integer,
-          kids: list,
-          score: integer,
-          time: integer,
-          title: String.t(),
-          type: String.t(),
-          url: String.t()
-        }
+
+  @doc """
+  %{
+    by: String.t(),
+    descendants: integer,
+    id: integer,
+    kids: list,
+    score: integer,
+    time: integer,
+    title: String.t(),
+    type: String.t(),
+    url: String.t()
+  }
+  """
+  @type story_data :: map()
 
   @callback fetch_500_top_stories_ids :: {:ok, list(story_id)} | {:error, :http_request_failed}
   @callback fetch_story(story_id) ::
