@@ -7,6 +7,8 @@ defmodule HackerNewsAggregator.Application do
 
   @impl true
   def start(_type, _args) do
+    initialize_ets_table(hacker_news_aggregator_env())
+
     children = [
       # Start the Telemetry supervisor
       HackerNewsAggregatorWeb.Telemetry,
@@ -24,11 +26,18 @@ defmodule HackerNewsAggregator.Application do
     Supervisor.start_link(children, opts)
   end
 
+  defp initialize_ets_table(:test), do: nil
+  defp initialize_ets_table(_), do: HackerNewsAggregator.Storage.initialize()
+
   # Tell Phoenix to update the endpoint configuration
   # whenever the application is updated.
   @impl true
   def config_change(changed, _new, removed) do
     HackerNewsAggregatorWeb.Endpoint.config_change(changed, removed)
     :ok
+  end
+
+  defp hacker_news_aggregator_env do
+    Application.get_env(:hacker_news_aggregator, :env)
   end
 end

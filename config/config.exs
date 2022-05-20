@@ -22,6 +22,8 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
+config :hacker_news_aggregator, env: config_env()
+
 config :hacker_news_aggregator, :hacker_news_api,
   http_adapter: :httpc,
   api_client: HackerNewsAggregator.HackerNewsApi,
