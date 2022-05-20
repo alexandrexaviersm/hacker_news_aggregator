@@ -15,19 +15,21 @@ defmodule HackerNewsAggregator.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: HackerNewsAggregator.PubSub},
       # Start the Endpoint (http/https)
-      HackerNewsAggregatorWeb.Endpoint
-      # Start a worker by calling: HackerNewsAggregator.Worker.start_link(arg)
-      # {HackerNewsAggregator.Worker, arg}
+      HackerNewsAggregatorWeb.Endpoint,
+      {Task.Supervisor, name: HackerNewsAggregator.TaskSupervisor}
     ]
 
-    # See https://hexdocs.pm/elixir/Supervisor.html
-    # for other strategies and supported options
+    children = children ++ worker_by_env(hacker_news_aggregator_env())
+
     opts = [strategy: :one_for_one, name: HackerNewsAggregator.Supervisor]
     Supervisor.start_link(children, opts)
   end
 
   defp initialize_ets_table(:test), do: nil
   defp initialize_ets_table(_), do: HackerNewsAggregator.Storage.initialize()
+
+  defp worker_by_env(:test), do: []
+  defp worker_by_env(_), do: [HackerNewsAggregator.Server]
 
   # Tell Phoenix to update the endpoint configuration
   # whenever the application is updated.
