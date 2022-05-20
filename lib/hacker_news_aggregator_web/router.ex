@@ -5,8 +5,19 @@ defmodule HackerNewsAggregatorWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :v0 do
+    plug(HackerNewsAggregatorWeb.ApiVersion, version: :v0)
+  end
+
   scope "/api", HackerNewsAggregatorWeb do
     pipe_through :api
+
+    scope "/v0" do
+      pipe_through(:v0)
+
+      get "/top_stories", StoryController, :top_stories
+      get "/get_story/:story_id", StoryController, :get_story
+    end
   end
 
   # Enables LiveDashboard only for development
