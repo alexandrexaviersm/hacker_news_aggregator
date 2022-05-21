@@ -89,9 +89,9 @@ defmodule HackerNewsAggregator.Server do
   defp retry_task_to_fetch_story_from_hacker_news(state, task_ref) do
     {{story_id, story_index}, updated_state} = pop_in(state.tasks[task_ref])
 
-    Logger.warn("Task to fetch story #{inspect(story_id)} from_hacker_news failed")
+    Logger.info("Task to fetch story #{inspect(story_id)} from_hacker_news failed")
 
-    Logger.warn("Retriyng task to fetch story: #{inspect(story_id)}")
+    Logger.info("Retriyng task to fetch story: #{inspect(story_id)}")
 
     task = create_task_to_fetch_story_from_hacker_news(story_id, story_index)
 

@@ -1,5 +1,5 @@
 defmodule HackerNewsAggregator.StoriesTest do
-  use ExUnit.Case
+  use HackerNewsAggregatorWeb.ChannelCase
 
   import Mox
 
@@ -49,10 +49,25 @@ defmodule HackerNewsAggregator.StoriesTest do
   describe "process_story_into_aggregator/2" do
     test "process story into aggregator" do
       story = %Story{id: 123}
-      story_index = 0
 
-      assert Stories.process_story_into_aggregator(story, story_index) ==
-               {:ok, :operation_completed}
+      assert {:ok, :operation_completed} =
+               Stories.process_story_into_aggregator(story, _story_index = 0)
+    end
+
+    test "new stories are broadcasted" do
+      HackerNewsAggregatorWeb.UserSocket
+      |> socket()
+      |> subscribe_and_join(HackerNewsAggregatorWeb.StoriesChannel, "stories:lobby")
+
+      %Story{id: 1234}
+      |> Stories.process_story_into_aggregator(_story_index = 0)
+
+      assert_push "new_story", %Story{id: 1234}
+
+      %Story{id: 456}
+      |> Stories.process_story_into_aggregator(_story_index = 1)
+
+      assert_push "new_story", %Story{id: 456}
     end
   end
 

@@ -40,7 +40,7 @@ defmodule HackerNewsAggregator.HackerNewsApi do
   end
 
   defp handle_response({:error, reason}) do
-    Logger.warn("HTTP Request failed. Reason #{inspect(reason)}")
+    Logger.info("HTTP Request failed. Reason #{inspect(reason)}")
 
     {:error, :http_request_failed}
   end
