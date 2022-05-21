@@ -15,7 +15,7 @@ defmodule HackerNewsAggregator.StoriesTest do
 
   describe "fetch_and_filter_top_stories_ids_from_hacker_news/0" do
     test "should only return 50 stories out of 500 from HackerNews API" do
-      expect(ApiBehaviourMock, :fetch_500_top_stories_ids, fn ->
+      expect(ApiBehaviourMock, :fetch_500_top_stories_ids, 1, fn ->
         {:ok, 1..500}
       end)
 
@@ -27,7 +27,7 @@ defmodule HackerNewsAggregator.StoriesTest do
 
   describe "fetch_story_by_story_id_from_hacker_news/1" do
     test "should return a story struct" do
-      expect(ApiBehaviourMock, :fetch_story, fn story_id ->
+      expect(ApiBehaviourMock, :fetch_story, 1, fn story_id ->
         assert story_id == 123
         {:ok, %{"id" => 123}}
       end)
@@ -37,7 +37,7 @@ defmodule HackerNewsAggregator.StoriesTest do
     end
 
     test "should return an error tuple if the get request don't find the data" do
-      expect(ApiBehaviourMock, :fetch_story, fn story_id ->
+      expect(ApiBehaviourMock, :fetch_story, 1, fn story_id ->
         assert story_id == 123
         {:error, :story_not_found}
       end)
