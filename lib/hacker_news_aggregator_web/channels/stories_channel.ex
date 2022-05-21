@@ -5,13 +5,9 @@ defmodule HackerNewsAggregatorWeb.StoriesChannel do
   alias HackerNewsAggregator.Stories
 
   @impl true
-  def join("stories:lobby", payload, socket) do
-    if authorized?(payload) do
-      send(self(), :after_join)
-      {:ok, socket}
-    else
-      {:error, %{reason: "unauthorized"}}
-    end
+  def join("stories:lobby", _payload, socket) do
+    send(self(), :after_join)
+    {:ok, socket}
   end
 
   @impl true
@@ -20,9 +16,5 @@ defmodule HackerNewsAggregatorWeb.StoriesChannel do
     |> Enum.each(&push(socket, "top_stories", &1))
 
     {:noreply, socket}
-  end
-
-  defp authorized?(_payload) do
-    true
   end
 end
