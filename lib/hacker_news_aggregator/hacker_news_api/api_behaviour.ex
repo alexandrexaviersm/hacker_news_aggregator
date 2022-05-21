@@ -5,7 +5,7 @@ defmodule HackerNewsAggregator.HackerNewsApi.ApiBehaviour do
 
   @type story_id :: non_neg_integer
 
-  @doc """
+  @typedoc """
   %{
     by: String.t(),
     descendants: integer,
